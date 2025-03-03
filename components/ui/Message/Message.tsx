@@ -50,7 +50,7 @@ export default function PositiveMessage({ startDate }: { startDate: Date }) {
         {message && (
           <>
             <p className="text-emerald-800 italic leading-relaxed">
-              "{message.text}"
+            {message.text}
             </p>
             {message.image && (
               <Image
