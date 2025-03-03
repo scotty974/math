@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import Image from "next/image";
 // Type definition for messages
 type Message = {
   text: string;
@@ -53,10 +53,12 @@ export default function PositiveMessage({ startDate }: { startDate: Date }) {
               "{message.text}"
             </p>
             {message.image && (
-              <img
+              <Image
                 src={message.image}
                 alt="Illustration"
                 className="w-full h-64 object-cover mx-auto rounded-lg shadow-md"
+                width={500}
+                height={500}
               />
             )}
           </>
