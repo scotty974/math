@@ -2,17 +2,19 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+
 // Type definition for messages
 type Message = {
   text: string;
   image?: string;
 };
 
-const calculateMessageIndex = (startDate: Date, messages: Message[]) => {
-  const today = new Date();
-  const validStartDate = startDate > today ? today : startDate;
-  const daysElapsed = Math.floor((today.getTime() - validStartDate.getTime()) / (1000 * 60 * 60 * 24));
-  return daysElapsed % messages.length;
+// Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+const shuffleArray = (array: Message[]) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]; // Échanger les éléments
+  }
 };
 
 const messages: Message[] = [
@@ -37,8 +39,12 @@ export default function PositiveMessage({ startDate }: { startDate: Date }) {
 
   useEffect(() => {
     if (!startDate) return; // Guard clause if startDate is undefined
-    const index = calculateMessageIndex(startDate, messages);
-    setMessage(messages[index]);
+    
+    // Mélanger les messages avant de sélectionner un message aléatoire
+    shuffleArray(messages);
+
+    // Sélectionner le premier message après mélange
+    setMessage(messages[0]);
   }, [startDate]);
 
   return (
@@ -50,7 +56,7 @@ export default function PositiveMessage({ startDate }: { startDate: Date }) {
         {message && (
           <>
             <p className="text-emerald-800 italic leading-relaxed">
-            {message.text}
+              {message.text}
             </p>
             {message.image && (
               <Image
